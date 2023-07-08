@@ -1,0 +1,21 @@
+app:
+  type: rest-api
+  name: todo
+  db:
+    type: InMemory
+
+rules:
+  - name: validateName
+    input: name
+    def: not blank, length >= 3 and <= 30, starts with alphanumeric
+  - name: validateDescription
+    input: description
+    def: optional, not blank, length <= 1000
+
+endpoints:
+  - name: Create Todo
+    actions:
+      - validateName(todo.name)
+      - validateDescription(todo.description)
+      - db.save(todo)
+
