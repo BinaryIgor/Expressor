@@ -1,4 +1,5 @@
 {
+  "name": "Todo",
   "schema": {
     "id": "UUID",
     "name": "String",

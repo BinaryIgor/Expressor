@@ -20,12 +20,15 @@ public class SpringAppGenerator implements AppGenerator {
 
     public static final String DEFAULT_PACKAGE = "com.example";
     public static final String DEFAULT_VERSION = "0.0.1-SNAPSHOT";
-
     private final SpringTemplates templates;
+    private final JavaClassGenerator generator;
     private final File output;
 
-    public SpringAppGenerator(SpringTemplates templates, File output) {
+    public SpringAppGenerator(SpringTemplates templates,
+                              JavaClassGenerator generator,
+                              File output) {
         this.templates = templates;
+        this.generator = generator;
         this.output = output;
     }
 
@@ -144,7 +147,7 @@ public class SpringAppGenerator implements AppGenerator {
     private void prepareModels(Path rootPackagePath,
                                List<ModelSpec> models) {
         for (var m : models) {
-            JavaClassGenerator.generateRecord(rootPackagePath, m);
+            generator.generateRecord(rootPackagePath, m);
         }
     }
 

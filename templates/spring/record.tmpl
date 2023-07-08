@@ -1,0 +1,10 @@
+// ${marker}
+package ${package};
+
+<#list imports as imp>import ${imp};
+</#list>
+
+public record ${name} (
+<#list schema as name, type>
+    ${type} ${name}<#sep>,
+</#list>) {}
