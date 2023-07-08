@@ -13,9 +13,14 @@ rules:
     def: optional, not blank, length <= 1000
 
 endpoints:
-  - name: Create Todo
-    actions:
+  todos:
+    - name: Create Todo
+      actions:
       - validateName(todo.name)
       - validateDescription(todo.description)
+      - reportTodo(todo)
       - db.save(todo)
+    - name: Get Todo
+      actions:
+      - db.get(todo.id)
 

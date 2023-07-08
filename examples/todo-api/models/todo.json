@@ -1,5 +1,8 @@
 {
-  "id": "UUID",
-  "name": "String",
-  "description": "String"
+  "schema": {
+    "id": "UUID",
+    "name": "String",
+    "description": "String"
+  },
+  "module": "todo"
 }
