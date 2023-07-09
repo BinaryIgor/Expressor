@@ -20,11 +20,11 @@ public class SpringAppGenerator implements AppGenerator {
 
     public static final String DEFAULT_PACKAGE = "com.example";
     public static final String DEFAULT_VERSION = "0.0.1-SNAPSHOT";
-    private final SpringTemplates templates;
+    private final AppTemplates templates;
     private final JavaClassGenerator generator;
     private final File output;
 
-    public SpringAppGenerator(SpringTemplates templates,
+    public SpringAppGenerator(AppTemplates templates,
                               JavaClassGenerator generator,
                               File output) {
         this.templates = templates;
@@ -49,7 +49,8 @@ public class SpringAppGenerator implements AppGenerator {
             prepareApplicationYml(mainDirs.resources, appName);
             prepareMainClass(mainDirs.java, packageName, appName);
 
-            prepareSrcTestDirectory(packageName);
+            var testDirs = prepareSrcTestDirectory(packageName);
+            prepareBaseTestClass(testDirs.java, packageName);
 
             prepareModels(mainDirs.java, appSpec.models());
 
@@ -85,8 +86,26 @@ public class SpringAppGenerator implements AppGenerator {
         return packageName.split("\\.");
     }
 
-    private void prepareSrcTestDirectory(String packageName) throws Exception {
+    private MainDirs prepareSrcTestDirectory(String packageName) throws Exception {
+        var mainPath = Path.of(output.getAbsolutePath(), "src", "test");
+        Files.createDirectories(mainPath);
 
+        var javaDir = Path.of(Path.of(mainPath.toString(), "java").toString(), packageDirs(packageName));
+        Files.createDirectories(javaDir);
+
+        var resourcesDir = Path.of(mainPath.toString(), "resources");
+        Files.createDirectories(resourcesDir);
+
+        return new MainDirs(javaDir, resourcesDir);
+    }
+
+    private void prepareBaseTestClass(Path rootTestPackagePath,
+                                      String packageName) throws Exception {
+        var mainClass = Templates.rendered(templates.baseTest(),
+                Map.of("marker", GENERATED_BY_MARKER,
+                        "package", packageName));
+
+        Files.writeString(Path.of(rootTestPackagePath.toString(), "IntegrationTest.java"), mainClass);
     }
 
     private void prepareMainClass(Path rootPackagePath,

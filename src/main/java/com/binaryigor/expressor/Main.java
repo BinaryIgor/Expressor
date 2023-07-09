@@ -3,7 +3,7 @@ package com.binaryigor.expressor;
 import com.binaryigor.expressor.extension.PathExtension;
 import com.binaryigor.expressor.generator.code.JavaClassGenerator;
 import com.binaryigor.expressor.generator.spring.SpringAppGenerator;
-import com.binaryigor.expressor.generator.spring.SpringTemplates;
+import com.binaryigor.expressor.generator.spring.AppTemplates;
 import com.binaryigor.expressor.spec.AppSpec;
 import com.binaryigor.expressor.spec.ModelSpec;
 import com.binaryigor.expressor.spec.Spec;
@@ -51,9 +51,10 @@ public class Main {
         generator.generate(appSpec);
     }
 
-    private static SpringTemplates springTemplates(String templatesDir) throws Exception {
-        return new SpringTemplates(Files.readString(Path.of(templatesDir, "pom.xml")),
-                Files.readString(Path.of(templatesDir, "app.tmpl")));
+    private static AppTemplates springTemplates(String templatesDir) throws Exception {
+        return new AppTemplates(Files.readString(Path.of(templatesDir, "pom.xml")),
+                Files.readString(Path.of(templatesDir, "app.tmpl")),
+                Files.readString(Path.of(templatesDir, "IntegrationTest.tmpl")));
     }
 
     private static List<ModelSpec> modelsSpec(File specDir) throws Exception {

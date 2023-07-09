@@ -14,13 +14,13 @@ rules:
 
 endpoints:
   todos:
-    - name: Create Todo
+    - name: createTodo
       actions:
       - validateName(todo.name)
       - validateDescription(todo.description)
       - reportTodo(todo)
       - db.save(todo)
-    - name: Get Todo
+    - name: getTodo
       actions:
       - db.get(todo.id)
 
